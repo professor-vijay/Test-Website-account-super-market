@@ -63,12 +63,12 @@
                     type="number" class="form-control" (keyup.enter)="BatchNum.focus()" />
             </div>
             <br>
-            <div>
+            <!-- <div>
                 <input #BatchNum [(ngModel)]="temporaryItem.BatchNum" onfocus="this.select()" placeholder="BatchNum..."
                     type="number" class="form-control" (keyup.enter)="ContainerCount.focus()" />
-            </div>
+            </div> -->
             <br>
-            <div>
+            <!-- <div>
                 <ng-template class="w-100" #st let-s="result" let-t="term">
                     <ngb-highlight [result]="s.stockContainerName" [term]="t"></ngb-highlight>
                 </ng-template>
@@ -76,7 +76,7 @@
                     #ContainerCount style="height: 84%;" type="text" class="form-control"
                     placeholder="Search Container..." [ngbTypeahead]="searchStock" [resultTemplate]="st"
                     [inputFormatter]="formatterStock" (selectItem)="selectItem($event.item)" />
-            </div>
+            </div> -->
             <br>
         </nz-card>
 
@@ -120,7 +120,7 @@
                                 </a>
                             </td>
                             <td>
-                                <input type="text" nz-input nzSize='small' [(ngModel)]="prod.quantity"
+                                <input type="text" nz-input nzSize='small' [(ngModel)]="prod.orderQuantity"
                                     style="width: 40px;">
                             </td>
                             <td>
@@ -148,13 +148,7 @@
                                 <a class="btn btn-sm btn-light" href="javascript: void(0);">
                                     {{product.ProductName}}
                                 </a>
-                                <!-- <ng-template class="w-100" #rt let-r="result" let-t="term">
-                                    <ngb-highlight [result]="r.product" [term]="t"></ngb-highlight>
-                                </ng-template>
-                                <input id="typeahead-template" 
-                                    [(ngModel)]="model" #productautocomplete style="height: 84%;" #instance="ngbTypeahead" type="text"
-                                    class="form-control" placeholder="Search Product..." [ngbTypeahead]="search" [resultTemplate]="rt"
-                                    [inputFormatter]="formatter" (selectItem)="selectedItem($event.item)" />                 -->
+                                            
                             </td>
                             <td>
                                 <input type="number" style="width: 50px;" nz-input nzSize='small'
@@ -171,7 +165,7 @@
                                 {{product.Tax2}}
                             </td>
                             <td>
-                                {{product.Dispatchprd}}
+                                {{product.ProductName}}
                             </td>
                             <!-- <td>
                                 {{product.BatchNum}}

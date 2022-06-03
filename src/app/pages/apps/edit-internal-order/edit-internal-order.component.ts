@@ -8,7 +8,7 @@ import { NzNotificationService } from 'ng-zorro-antd'
 import { merge, Observable, Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
-import { OrderItemModule, OrderModule, DispatchModule } from './edit-internal.module';
+import { OrderItemModule, OrderModule } from './edit-internal.module';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Location } from '@angular/common';
 @Component({
@@ -48,7 +48,8 @@ export class EditInternalOrderComponent implements OnInit {
 
   model: any = 'QWERTY'
   order: OrderModule
-  Disp: DispatchModule
+  item: OrderItemModule
+
   inputValue: string = '';
   focus$ = new Subject<string>()
   click$ = new Subject<string>()
@@ -108,9 +109,9 @@ export class EditInternalOrderComponent implements OnInit {
   // OrderedById:null;
   // SuppliedById:null;
   // SupplierName:'';
-  SuppliedBy ='';
-  Idorder =0;
-  OrderedBy ='';
+  SuppliedBy = '';
+  Idorder = 0;
+  OrderedBy = '';
   scrollContainer: any;
   finalarray: any = [];
   products: any = [];
@@ -136,8 +137,8 @@ export class EditInternalOrderComponent implements OnInit {
   storeId = 0;
   orderDate = '';
   CustomerAddressId = null;
-  Ordprd:any =[];
-  CompanyId :any;
+  Ordprd: any = [];
+  CompanyId: any;
   CustomerId = null;
   InvoiceNo = 0;
   sourceId = 0;
@@ -184,9 +185,9 @@ export class EditInternalOrderComponent implements OnInit {
   // ContainerName ='';
   act = 'Chk'
   users = [];
-  orderType ='Receiver';
+  orderType = 'Receiver';
   orderStatus = 3;
-  numRecordsStr =50;
+  numRecordsStr = 50;
   dispatchStatus = 1;
 
   tableData = [
@@ -210,8 +211,8 @@ export class EditInternalOrderComponent implements OnInit {
     }
   ]
   submitted: boolean = false;
-  temporaryItem: any = { DiscAmount: 0, DispatchQty: null, StorageStoreId: null, StorageStoreName: '', BatchNum: null, ContainerCount: null, ContainerId: null, ContainerName: '' };
-  barcodeItem = { quantity: null, tax: 0, amount: 0, price: null, Tax1: 0, Tax2: 0, StorageStoreId: null, StorageStoreName: '', BatchNum: null, ContainerCount: null, ContainerId: null, ContainerName: '' };
+  temporaryItem: any = { DiscAmount: 0, DispatchQty: null, StorageStoreId: null, StorageStoreName: '',   };
+  barcodeItem = { quantity: null, tax: 0, amount: 0, price: null, Tax1: 0, Tax2: 0, StorageStoreId: null, StorageStoreName: '',  };
   barcodemode: boolean = false;
   customerdetails = { data_state: '', name: '', PhoneNo: '', email: '', address: '', companyId: 0 }
   customers: any = [];
@@ -219,8 +220,8 @@ export class EditInternalOrderComponent implements OnInit {
   StockContainerId: null;
   createby: '';
   array: any = [];
-  ProductId =0;
-  WipStatus ='';
+  ProductId = 0;
+  WipStatus = '';
   // quantityfc = new FormControl('', [Validators.required, Validators.min(1)]);
 
 
@@ -228,7 +229,7 @@ export class EditInternalOrderComponent implements OnInit {
     private modalService: NgbModal,
     private Auth: AuthService,
     private notification: NzNotificationService,
-     private router: Router ,
+    private router: Router,
     private _avRoute: ActivatedRoute,
     public location: Location) {
 
@@ -236,14 +237,13 @@ export class EditInternalOrderComponent implements OnInit {
     this.users = JSON.parse(localStorage.getItem("users"));
 
   }
-  newselectedItem(item)
-  {
-    console.log("item",item)
-     this.ProductId =item.productId;
+  newselectedItem(item) {
+    console.log("item", item)
+    this.ProductId = item.productId;
   }
   selectedsupplieritem(item) {
-    console.log("item",item);
-    this.SuppliedById =item.id;
+    console.log("item", item);
+    this.SuppliedById = item.id;
   }
   searchsupplier = (text$: Observable<string>) =>
     text$.pipe(
@@ -255,8 +255,8 @@ export class EditInternalOrderComponent implements OnInit {
   formattersupplier = (x: { name: string }) => x.name;
 
   selectedreceiveritem(item) {
-    console.log("item",item);
-    this.OrderedById =item.id;
+    console.log("item", item);
+    this.OrderedById = item.id;
   }
   searchreceiver = (text$: Observable<string>) =>
     text$.pipe(
@@ -278,12 +278,12 @@ export class EditInternalOrderComponent implements OnInit {
           element["Price"] = element.price;
           this.array.push({
             CompanyId: element["companyId"],
-             ContainerId: element["containerId"],
-             ContainerWeight: element["containerWeight"],
+            ContainerId: element["containerId"],
+            ContainerWeight: element["containerWeight"],
             OpenQty: element["orderQuantity"],
             GrossQty: element["orderQuantity"],
             DispatchQty: element["orderQuantity"],
-           OrderQuantity: element["orderQuantity"],
+            OrderQuantity: element["orderQuantity"],
             DispatchProductId: element["productId"],
             ProductId: element["productId"],
             Dispatchprd: element["description"],
@@ -299,89 +299,43 @@ export class EditInternalOrderComponent implements OnInit {
             Updated: element["updated"],
             OrdItemDetailId: element["id"],
             barcodeId: element["barcodeId"],
-            OrderItemType:element["orderItemType"],
-            OrderItemRefId:element["orderItemRefId"],
-            RefId:element["refId"]
+            OrderItemType: element["orderItemType"],
+            OrderItemRefId: element["orderItemRefId"],
+            RefId: element["refId"]
           })
         })
         this.SuppliedById = this.ordPrdDetails.order[0].suppliedById;
         this.OrderedById = this.ordPrdDetails.order[0].orderedById;
         this.SuppliedBy = this.ordPrdDetails.order[0].suppliedBy;
-        this.OrderedBy = this.ordPrdDetails.order[0].OrderedBy; 
+        this.OrderedBy = this.ordPrdDetails.order[0].OrderedBy;
         this.Idorder = this.ordPrdDetails.order[0].id;
-        this.ordPrdDetails.order.forEach(element => {
-           element["StorageStoreId"] = element.SuppliedById;
-           this.array[0].StorageStoreId = element["StorageStoreId"]
-        })
-        console.log("array2", this.array)    
+        // this.ordPrdDetails.order.forEach(element => {
+        //   element["StorageStoreId"] = element.SuppliedById;
+        //   this.array[0].StorageStoreId = element["StorageStoreId"]
+        // })
+        console.log("array2", this.array)
       })
     }
   }
   getord() {
     {
       this.Ordprd.push({
-        companyId:this.loginfo.companyId,
-        searchId:this.ordId,
-        UserID:this.users[0].id,
-        orderType:this.orderType,
-        orderStatus:this.orderStatus,
-        numRecordsStr:this.numRecordsStr,
-        dispatchStatus:this.dispatchStatus
+        companyId: this.loginfo.companyId,
+        searchId: this.ordId,
+        UserID: this.users[0].id,
+        orderType: this.orderType,
+        orderStatus: this.orderStatus,
+        numRecordsStr: this.numRecordsStr,
+        dispatchStatus: this.dispatchStatus
       })
-        this.Auth.getorder(this.Ordprd).subscribe(data => {
-        this.ordDetails = data;
-        // this.ordPrdDetails.dispatchList.forEach(element => {
-        //   element.Action = "Chk";
-        //   element["StorageStoreId"] = element.order.storeId
-        //   element["DispatchProductId"] = element.product.id
-        //   element["ProductId"] = element.product.id
-        //   element["Dispatchprd"] = element.product.name
-        //   element["ProductName"] = element.product.name
-        //   element["Price"] = element.product.price
-        //   element["Tax1"] = element.tax1
-        //   element["Tax2"] = element.tax2
-        //   element["Tax3"] = element.tax3
-        //   element["Tax4"] = element.tax4
-        //   element["Action"] = 'Chk'
-        //   this.StoreId = element.order.storeId;
-        //   this.array.push({
-        //     StorageStoreId: element["StorageStoreId"],
-        //     companyId: element["companyId"],
-        //     ContainerId: element["containerId"],
-        //     ContainerWeight: element["containerWeight"],
-        //     OpenQty: element["openQuantity"],
-        //     GrossQty: element["openQuantity"],
-        //     DispatchQty: element["openQuantity"],
-        //     OrderQuantity: element["openQuantity"],
-        //     DispatchProductId: element["DispatchProductId"],
-        //     ProductId: element["ProductId"],
-        //     Dispatchprd: element["Dispatchprd"],
-        //     ProductName: element["ProductName"],
-        //     Price: element["price"],
-        //     Tax1: element["Tax1"],
-        //     Tax2: element["Tax2"],
-        //     Tax3: element["Tax3"],
-        //     Tax4: element["Tax4"],
-        //     Action: element["Action"],
-        //   })
-        // })
-        // this.ordPrdDetails.orderItem.forEach(element => {
-        //   element["OrderItemId"] = element.id;
-        //   element["OrderId"] = element.orderId;
-        //   this.array[0].OrderItemId = element["OrderItemId"]
-        //   this.array[0].OrderId = element["OrderId"]
-        //   this.array[1].OrderItemId = element["OrderItemId"]
-        //   this.array[1].OrderId = element["OrderId"]
-        //   this.array[2].OrderItemId = element["OrderItemId"]
-        //   this.array[2].OrderId = element["OrderId"]
-        //   this.array[3].OrderItemId = element["OrderItemId"]
-        //   this.array[3  ].OrderId = element["OrderId"]
-        // })
-      })
+      // this.Auth.getorder(this.Ordprd).subscribe(data => {
+      //   this.ordDetails = data;
+       
+      // })
     }
   }
   getBarcodeProduct() {
-    this.Auth.getBarcodeProduct(this.loginfo.companyId, 0).subscribe(data => {
+    this.Auth.getBarcodeProduct(this.CompanyId, this.streId).subscribe(data => {
       console.log(data)
       this.products = data["products"];
       this.batchno = data["lastbatchno"] + 1;
@@ -395,7 +349,7 @@ export class EditInternalOrderComponent implements OnInit {
 
     })
   }
-loginfo
+  loginfo
   ngOnInit(): void {
     this.Auth.getdbdata(['loginfo']).subscribe(data => {
       this.loginfo = data['loginfo'][0]
@@ -410,7 +364,7 @@ loginfo
       this.getord();
       this.getorderPrd();
     })
-    
+
     this.products.forEach(product => {
       product.quantity = null;
       product.tax = 0;
@@ -419,15 +373,15 @@ loginfo
   }
   getOrderList() {
     this.Ordprd.push({
-      companyId:this.loginfo.companyId,
-      searchId:this.ordId,
-      numRecordsStr:this.numRecordsStr,
+      companyId: this.loginfo.companyId,
+      searchId: this.ordId,
+      numRecordsStr: this.numRecordsStr,
     })
-    console.log("fsf",this.Ordprd)
-    this.Auth.getorder(this.Ordprd).subscribe(data => {
-      this.OrdData = data;
-      console.log("OrdData", this.OrdData)
-    })
+    console.log("fsf", this.Ordprd)
+    // this.Auth.getorder(this.Ordprd).subscribe(data => {
+    //   this.OrdData = data;
+    //   console.log("OrdData", this.OrdData)
+    // })
   }
 
   setproductbybarcode(data) {
@@ -446,28 +400,35 @@ loginfo
       this.cartitems.push(Object.assign({}, this.barcodeItem));
     }
     this.calculate();
-    this.barcodeItem = { quantity: null, tax: 0, amount: 0, price: null, Tax1: 0, Tax2: 0, StorageStoreId: null, StorageStoreName: '', BatchNum: null, ContainerCount: this.ContainWgt, ContainerId: this.StockContainerId, ContainerName: '' };
+    this.barcodeItem = { quantity: null, tax: 0, amount: 0, price: null, Tax1: 0, Tax2: 0, StorageStoreId: null, StorageStoreName: '',  };
     this.barcValue = ''
   }
 
   delete(item) {
-console.log("delete",item)
-this.Auth.deleteOrdItem( this.loginfo.companyId,item.id).subscribe(data => {
-  console.log("delete",data)
-  this.getorderPrd();
-  })
-}
+    console.log("delete", item)
+    this.Auth.deleteOrdItem(this.loginfo.companyId, item.id).subscribe(data => {
+      console.log("delete", data)
+      this.getorderPrd();
+    })
+  }
 
-deletenew(index) {
-  this.order.Items.splice(index, 1);
-  this.order.setbillamount();
-}
-settotalprice(i, qty) {
-    this.cartitems[i].amount = this.cartitems[i].Price * this.cartitems[i].DispatchQty;
-    this.cartitems[i].tax = this.cartitems[i].amount * (this.cartitems[i].Tax1 + this.cartitems[i].Tax2) / 100;
-    console.log(i, this.cartitems[i].Price, this.cartitems[i].DispatchQty, this.cartitems[i].amount, qty)
+  deletenew(index) {
+    this.order.Items.splice(index, 1);
+    this.order.setbillamount();
+  }
+  settotalprice(i, qty) {
+    this.cartitems[i].amount = this.cartitems[i].Price * this.cartitems[i].Quantity
+    this.cartitems[i].tax =
+      (this.cartitems[i].amount * (this.cartitems[i].Tax1 + this.cartitems[i].Tax2)) / 100
+    console.log(
+      i,
+      this.cartitems[i].Price,
+      this.cartitems[i].Quantity,
+      this.cartitems[i].amount,
+      qty,
+    )
     this.cartitems[i].amount = +this.cartitems[i].amount.toFixed(2)
-    this.calculate();
+    this.calculate()
   }
 
   calculate() {
@@ -498,7 +459,7 @@ settotalprice(i, qty) {
     this.isVisible = true
   }
   dropdownnew(Value) {
-    console.log("Value",Value)
+    console.log("Value", Value)
     this.WipStatus = Value;
   }
   validation() {
@@ -537,55 +498,21 @@ settotalprice(i, qty) {
   }
   addItem() {
     console.log("temporaryItem", this.temporaryItem)
-  
-    this.temporaryItem.ContainerCount = this.ContainWgt;
-    this.temporaryItem.ContainerId = this.StockContainerId;
-    this.temporaryItem.ContainerName = this.StkContainerName;
-    this.temporaryItem.StorageStoreId = this.StoreId;
-    this.submitted = true;
+    console.log('temporaryItem', this.temporaryItem)
+    this.submitted = true
+    console.log(this.validation())
     if (this.validation()) {
-      if (this.order.Items.some(x => x.BarcodeId == this.temporaryItem["barcodeId"])) {
-        this.order.Items.filter(x => x.BarcodeId == this.temporaryItem["barcodeId"])[0].OrderQuantity += this.temporaryItem.Quantity
-        this.order.Items.filter(x => x.BarcodeId == this.temporaryItem["barcodeId"])[0].OrderQuantity += this.temporaryItem.Quantity
-        this.order.setbillamount()
-      } else {
-        this.order.FoodReady =this.FoodReady;
-        this.order.OrderType = this.OrderType;
-        this.order.SpecialOrder =this.SpecialOrder;
-        this.order.DiscAmount =this.DiscAmount;
-        this.order.DiscPercent =this.DiscPercent;
-        this.order.PreviousStatusId =this.PreviousStatusId;
-                this.order.ProdStatus = "1";
-                this.order.WipStatus = "1"    
-                this.order.Id = this.ordId;
-                this.order.SuppliedById = this.SuppliedById;
-                this.order.OrderedById = this.OrderedById;
-                this.order.StoreId = this.StoreId;
-                this.order.OrderedDateTime =moment().format('YYYY-MM-DD HH:MM A');
-                this.order.OrderedDate =moment().format('YYYY-MM-DD HH:MM A');
-                this.order.CreatedDate =moment().format('YYYY-MM-DD HH:MM A');    
-                this.order.BillDate =moment().format('YYYY-MM-DD HH:MM A');    
-                this.order.BillDateTime =moment().format('YYYY-MM-DD HH:MM A');            
-        this.order.addproduct(this.temporaryItem, this.OrdId, this.StoreId)
-      }
-      this.products.forEach(prod => {
-        if (prod.barcodeId == this.temporaryItem["barcodeId"]) {
-          prod.quantity -= this.temporaryItem.DispatchQty
-          prod.ContainerCount = this.ContainWgt
-          prod.ContainerId = this.StockContainerId
-          prod.ContainerName = this.StkContainerName
-        }
-        // prod.product =this.temporaryItem.dispatchPrd;
-        // prod.productId =this.temporaryItem.dispatchPrdId;
-      });
-      this.temporaryItem = { DiscAmount: 0, DispatchQty: null, DiscPercent: 0 };
+      this.order.addproduct(this.temporaryItem, this.OrdId, this.StoreId)
+      this.temporaryItem = { DiscAmount: 0, Quantity: null }
       this.productinput['nativeElement'].focus()
-      this.model = "";
-      this.filteredvalues = [];
-      this.submitted = false;
-      // console.log(this.order)
-      return
+      this.model = ''
+      this.filteredvalues = []
+      this.submitted = false
+      console.log('cvcv', this.order)
+
     }
+    return
+
   }
 
   getStoreList() {
@@ -601,137 +528,128 @@ settotalprice(i, qty) {
       this.getOrderList();
     })
   }
-  addQty(qty,item)
-  {
-    console.log("addQty",qty,item)
+  addQty(qty, item) {
+    console.log("addQty", qty, item)
     this.ordPrdDetails.dispatchList.forEach(element => {
-      if(element.id ==item.id)
-      {
-        console.log("Qty",qty,item.id)
+      if (element.id == item.id) {
+        console.log("Qty", qty, item.id)
         element.openQuantity = qty;
       };
       return element;
     })
-     this.getord();
+    this.getord();
   }
-  addPrice(price,item)
-  {
-    console.log("addprice",price,item)
+  addPrice(price, item) {
+    console.log("addprice", price, item)
     this.ordPrdDetails.dispatchList.forEach(element => {
-      if(element.id ==item.id)
-      {
-        console.log("price",price,item.id)
+      if (element.id == item.id) {
+        console.log("price", price, item.id)
         element.Price = price;
       };
       return element;
     })
-     this.getord();
+    this.getord();
   }
-  addTax1(Tax,item)
-  {
-    console.log("addprice",Tax,item)
+  addTax1(Tax, item) {
+    console.log("addprice", Tax, item)
     this.ordPrdDetails.dispatchList.forEach(element => {
-      if(element.id ==item.id)
-      {
-        console.log("Tax",Tax,item.id)
+      if (element.id == item.id) {
+        console.log("Tax", Tax, item.id)
         element.Tax1 = Tax;
       };
       return element;
     })
-     this.getord();
+    this.getord();
   }
-  addTax2(Tax,item)
-  {
-    console.log("addprice",Tax,item)
+  addTax2(Tax, item) {
+    console.log("addprice", Tax, item)
     this.ordPrdDetails.dispatchList.forEach(element => {
-      if(element.id ==item.id)
-      {
-        console.log("price",Tax,item.id)
+      if (element.id == item.id) {
+        console.log("price", Tax, item.id)
         element.Tax2 = Tax;
       };
       return element;
     })
-     this.getord();
+    this.getord();
   }
-  addTax3(Tax,item)
-  {
-    console.log("Tax",Tax,item)
+  addTax3(Tax, item) {
+    console.log("Tax", Tax, item)
     this.ordPrdDetails.dispatchList.forEach(element => {
-      if(element.id ==item.id)
-      {
-        console.log("price",Tax,item.id)
+      if (element.id == item.id) {
+        console.log("price", Tax, item.id)
         element.Tax3 = Tax;
       };
       return element;
     })
-     this.getord();
+    this.getord();
   }
-  addBatch(price,item)
-  {
-    console.log("addprice",price,item)
+  addBatch(price, item) {
+    console.log("addprice", price, item)
     this.ordPrdDetails.dispatchList.forEach(element => {
-      if(element.id ==item.id)
-      {
-        console.log("price",price,item.id)
+      if (element.id == item.id) {
+        console.log("price", price, item.id)
         element.Price = price;
       };
       return element;
     })
-     this.getord();
+    this.getord();
   }
-
+  isEditting: boolean = false
   Update() {
     var finalarray = [...this.array, ...this.order.Items]
-    this.Disp = new DispatchModule(this.OrdId, this.OrderedById, this.SuppliedById, this.DispatchById, this.dispatchTypeId, finalarray, this.orderDate, this.users, this.createby,this.WipStatus)
     console.log("finalarray", finalarray)
-    this.Auth.Update(this.Disp).subscribe(data => {
-     console.log("temporry", data)
-         })
-  }
-  openDetailpopup(contentdetail,id)
-  {
-    this.Ordprd.push({
-      companyId:this.loginfo.companyId,
-      searchId:this.ordId,
-      UserID:this.users[0].id,
-      orderType:this.orderType,
-      orderStatus:this.orderStatus,
-      numRecordsStr:this.numRecordsStr,
-      dispatchStatus:this.dispatchStatus
+    this.order.CompanyId = this.loginfo.companyId
+    this.order.Items.forEach(item => {
+      item.CompanyId = this.loginfo.companyId
     })
-   this.Auth.getorder(this.Ordprd).subscribe(data => {
-     this.popupData = data;
-     console.log("popupData",this.popupData)
-   })
-   this.TotalProductSale =0;
-   this.TotalPrdQty =0;
+    this.Auth.Update(this.order).subscribe(data => {
+      console.log("temporry", data)
+    })
+    this.isEditting = false
+  }
+  openDetailpopup(contentdetail, id) {
+    this.Ordprd.push({
+      companyId: this.loginfo.companyId,
+      searchId: this.ordId,
+      UserID: this.users[0].id,
+      orderType: this.orderType,
+      orderStatus: this.orderStatus,
+      numRecordsStr: this.numRecordsStr,
+      dispatchStatus: this.dispatchStatus
+    })
+    // this.Auth.getorder(this.Ordprd).subscribe(data => {
+    //   this.popupData = data;
+    //   console.log("popupData", this.popupData)
+    // })
+    this.TotalProductSale = 0;
+    this.TotalPrdQty = 0;
 
-   for (let i = 0; i < this.popupData.order.length; i++) {
-     this.TotalProductSale = this.TotalProductSale + this.popupData.order[i].totalsales;
-     this.TotalPrdQty = this.TotalPrdQty + this.popupData.order[i].qty;
-     this.TotalProductSale = +(this.TotalProductSale.toFixed(2))
-     this.TotalPrdQty = +(this.TotalPrdQty.toFixed(2))  
-   }
-   const modalRef = this.modalService
-     .open(contentdetail, {
-       ariaLabelledBy: "modal-basic-title",
-       centered: true
-     })
-     .result.then(
-       result => {
-       },
-       reason => {
-       }
-     );
-     }
+    for (let i = 0; i < this.popupData.order.length; i++) {
+      this.TotalProductSale = this.TotalProductSale + this.popupData.order[i].totalsales;
+      this.TotalPrdQty = this.TotalPrdQty + this.popupData.order[i].qty;
+      this.TotalProductSale = +(this.TotalProductSale.toFixed(2))
+      this.TotalPrdQty = +(this.TotalPrdQty.toFixed(2))
+    }
+    const modalRef = this.modalService
+      .open(contentdetail, {
+        ariaLabelledBy: "modal-basic-title",
+        centered: true
+      })
+      .result.then(
+        result => {
+        },
+        reason => {
+        }
+      );
+  }
 
-     getorderedList: any = []
-     Getorderlist() {
-       this.Auth.getorderlist(this.loginfo.storeId).subscribe(data => {
-         this.getorderedList = data['orders']
-         console.log(this.getorderedList)
-        
-       })
-     }
+  getorderedList: any = []
+  Getorderlist() {
+    this.Auth.getorderlist(this.loginfo.storeId).subscribe(data => {
+      this.getorderedList = data['orders']
+      console.log(this.getorderedList)
+
+    })
+  }
 
 }

@@ -35,7 +35,7 @@ export class OrderModule {
     DeliveryDateTime: string;
     BillDateTime: string;
     BillDate: string;
-     Note: string;
+    Note: string;
     OrderStatusDetails: string;
     RiderStatusDetails: string;
     FoodReady: boolean = false;
@@ -69,10 +69,10 @@ export class OrderModule {
     Items: Array<OrderItemModule>;
     Subtotal: number
     TaxAmount: number
-    BatchNum:number
-    constructor(ordertype,Id) {
+    // BatchNum:number
+    constructor(ordertype, Id) {
         this.Items = [];
-        this.Id =Id;
+        this.Id = Id;
         this.Updated = false;
         this.OrderNo = 0;
         this.InvoiceNo = 0;
@@ -121,7 +121,7 @@ export class OrderModule {
         // this.AllItemTotalDisc = 0;
         this.ModifiedDate = '';
         // this.UserId = 0;
-        this.CompanyId = 1;
+        this.CompanyId = 0;
         this.OrderType = ordertype;
         // this.AutoOrderId = 0;
         this.CreatedDate = '';
@@ -129,23 +129,22 @@ export class OrderModule {
         this.OrderedById = 0;
         // this.OrderStatus = 0;
         // this.DispatchStatus = 0;
-    //  this.ReceiveStatus = 0;
+        //  this.ReceiveStatus = 0;
         // this.CancelStatus = 0;
         this.SpecialOrder = false;
         this.WipStatus = '';
         this.ProdStatus = '';
         // this.DifferentPercent = 0;
     }
-    addproduct(product,OrdId,storeId) {
-        this.Items.push(new OrderItemModule(product,OrdId,storeId))
+    addproduct(product, OrdId, storeId) {
+        this.Items.push(new OrderItemModule(product, OrdId, storeId))
         this.setbillamount()
     }
-    add(prd)
-    {
+    add(prd) {
         this.setbillamount();
     }
 
-    
+
     setbillamount() {
         this.BillAmount = 0;
         this.DiscAmount = 0;
@@ -163,8 +162,8 @@ export class OrderModule {
             item.TaxAmount2 = item.Tax2 * item.Amount / 100
             item.TaxAmount3 = item.Tax3 * item.Amount / 100
             item.TaxAmount = item.TaxAmount1 + item.TaxAmount2 + item.TaxAmount3
-            item.DispatchProductId =item.ProductId;
-            item.Dispatchprd =item.ProductName;
+            item.DispatchProductId = item.ProductId;
+            item.Dispatchprd = item.ProductName;
             this.Subtotal += item.Amount
             this.Tax1 += item.TaxAmount1
             this.Tax2 += item.TaxAmount2
@@ -183,7 +182,7 @@ export class OrderItemModule {
     Updated: boolean = false;
     DiscPercent: number;
     DiscAmount: number;
-    DispatchQty:number;
+    DispatchQty: number;
     // ItemDiscount: number;
     // TaxItemDiscount: number;
     // OrderDiscount: number;
@@ -193,7 +192,7 @@ export class OrderItemModule {
     // KOTId: number;
     Note: string;
     Message: string;
-     Amount: number;
+    Amount: number;
     // Extra: number;
     // CategoryId: number;
     OptionJson: string;
@@ -201,8 +200,8 @@ export class OrderItemModule {
     OrderItemId: number;
     OrderId: number;
     ProductId: number;
-     OrderQuantity: number;
-     GrossQty:number;
+    OrderQuantity: number;
+    GrossQty: number;
     // DispatchedQuantity: number;
     // ReceivedQuantity: number;
     // ReturnedQuantity: number;
@@ -217,10 +216,10 @@ export class OrderItemModule {
     Tax4: number;
     // Amount: number;
     CreatedDate: string;
-    DispatchProductId:number;
-    Dispatchprd:string;
-    Unit:string;
-    OpenQty:number;
+    DispatchProductId: number;
+    Dispatchprd: string;
+    Unit: string;
+    OpenQty: number;
     // CreatedBy: number;
     // BillId: number;
     // PendingQty: number;
@@ -232,21 +231,21 @@ export class OrderItemModule {
     CompanyId: number;
     VarianceReasonStr: string
     VarianceReasonDesc: string;
- BarcodeId: number;
+    BarcodeId: number;
     TaxAmount1: number;
     TaxAmount2: number;
     TaxAmount3: number;
     IsInclusive: boolean;
-    Action:string;
-    BatchNum:number;
-    ContainerCount:number;
-    ContainerId:number;
-    ContainerName:string;
-    StorageStoreId:number;
-    ordId:number;
-    RefId:string;
-    constructor(product,OrdId,storeId) {
-        console.log("product",product,OrdId)
+    Action: string;
+    // BatchNum:number;
+    ContainerCount: number;
+    ContainerId: number;
+    ContainerName: string;
+    StorageStoreId: number;
+    ordId: number;
+    RefId: string;
+    constructor(product, OrdId, storeId) {
+        console.log("product", product, OrdId)
         this.Id = 0;
         this.Updated = false;
         this.DiscPercent = 0;
@@ -284,33 +283,33 @@ export class OrderItemModule {
         // this.OrderLevel = 0;
         // this.StockUpdateId = 0;
         this.OldStock = 0;
-        this.CompanyId = 1;
+        this.CompanyId = 0;
         // this.VarianceReasonStr = '';
         // this.VarianceReasonDesc = '';
-        this.Unit =product.unit;
+        this.Unit = product.unit;
         this.BarcodeId = product.barcodeId;
         this.DiscAmount = product.DiscAmount;
         this.ProductName = product.product
         this.ProductId = product.productId;
         this.Dispatchprd = product.product;
-        this.DispatchProductId =product.productId;
+        this.DispatchProductId = product.productId;
         this.OrderQuantity = product.DispatchQty;
-        this.DispatchQty =product.DispatchQty;
-        this.GrossQty =product.DispatchQty;
-        this.OpenQty =product.DispatchQty;
+        this.DispatchQty = product.DispatchQty;
+        this.GrossQty = product.DispatchQty;
+        this.OpenQty = product.DispatchQty;
         this.Price = product.price;
         this.Tax1 = product.tax1;
         this.Tax2 = product.tax2;
         this.Tax3 = product.tax3;
         this.Tax4 = 0;
         this.IsInclusive = product.isInclusive;
-        this.Action ='Add';
-        this.BatchNum =product.BatchNum;
-        this.ContainerCount =product.ContainerCount;
-        this.ContainerId =product.ContainerId
-        this.ContainerName =product.ContainerName
-        this.StorageStoreId =storeId;
-        this.RefId = product.productId+moment().format('YYYY-MM-DD HH:MM A');
+        this.Action = 'Add';
+        // this.BatchNum =product.BatchNum;
+        this.ContainerCount = product.ContainerCount;
+        this.ContainerId = product.ContainerId
+        this.ContainerName = product.ContainerName
+        this.StorageStoreId = storeId;
+        this.RefId = product.productId + moment().format('YYYY-MM-DD HH:MM A');
     }
 }
 export class OrderItemDetailModule {
@@ -339,7 +338,7 @@ export class OrderItemDetailModule {
     DiscPerQty: number;
     // AutoOrderId: number;
     CompanyId: number;
-    OrderItemRefId:string;
+    OrderItemRefId: string;
     // VarianceReasonStr: string;
     // VarianceReasonDesc: string
     constructor(product, options, showname) {
@@ -368,7 +367,7 @@ export class OrderItemDetailModule {
         this.DiscPerQty = 0;
         // this.AutoOrderId = 0;
         this.CompanyId = 0;
-        this.OrderItemRefId = product.productId+moment().format('YYYY-MM-DD HH:MM A');
+        this.OrderItemRefId = product.productId + moment().format('YYYY-MM-DD HH:MM A');
         // this.VarianceReasonStr = '';
         // this.VarianceReasonDesc = '';
     }
@@ -401,39 +400,4 @@ export class CustomerModule {
     }
 }
 
-export class DispatchModule {
-    OrderedById: number;
-    SuppliedById: number;
-    DispatchById: number;
-    ReceiverId:number;
-    ProviderId:number;
-    OrderId: number;
-    dispatchType: number;
-    Items: [];
-    DispatchedDate: string;
-    googlemapurl: string;
-    companyId: number;
-    userId:number;
- CreatedBy: number;
- WipStatus:string;
-    // Sync: number;
-    // val: number;
-    constructor(OrdId,OrderedById,SuppliedById,DispatchById,dispatchTypeId,finalarray,DispatchedDate,userId,createby,WipStatus) {
-        console.log("UserId",userId)
-        this.OrderedById = OrderedById;
-        this.ReceiverId = OrderedById;
-        this.SuppliedById = SuppliedById;
-        this.ProviderId =SuppliedById;
-        this.DispatchById = DispatchById;
-        this.OrderId = OrdId;
-        this.dispatchType = dispatchTypeId;
-        this.Items = finalarray;
-        this.DispatchedDate = DispatchedDate;
-        this.companyId = 1;
-        this.userId =userId[0].id;
-         this.CreatedBy =createby;
-         this.WipStatus = WipStatus;
-        // this.StoreId = 0;
-        // this.Sync = 0;
-    }
-}
+

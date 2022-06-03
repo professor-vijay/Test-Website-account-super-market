@@ -199,6 +199,7 @@ export class InternalTransferComponent implements OnInit {
   // companyId = 1
   numRecords = 50
   NewArr: any = []
+  show = true
   tableData = [
     {
       key: '1',
@@ -359,7 +360,7 @@ export class InternalTransferComponent implements OnInit {
 
     this.order.Items.forEach(item => {
       item.CompanyId = this.loginfo.companyId
-      // this.order.Items.push(item)
+     
     })
     this.order.OrderDetail.forEach(Od =>{
       Od.CompanyId = this.loginfo.companyId
@@ -410,12 +411,8 @@ export class InternalTransferComponent implements OnInit {
   getOrderList() {
     this.Ordprd.push({
       companyId: this.CompanyId,
-      searchId: this.ordId,
-      // UserID:this.users[0].id,
-      // orderType:this.orderType,
-      // orderStatus:this.orderStatus,
+      searchId: this.ordId,     
       numRecordsStr: this.numRecordsStr,
-      // dispatchStatus:this.dispatchStatus
     })
     this.Auth.getorder(this.Ordprd).subscribe(data => {
       this.OrdData = data
@@ -672,7 +669,7 @@ export class InternalTransferComponent implements OnInit {
     window.location.reload()
   }
 
-  show: number = 0
+
   // order: any = null
 
 
